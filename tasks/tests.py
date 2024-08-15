@@ -12,7 +12,7 @@ class TaskTests(APITestCase):
             description="uma tarefa para teste",
             due_date="2024-08-18"
         )
-        # procura a url para listar e criar tarefas
+        # procura o name declarado em urls.py
         self.url_create_list = reverse('task-create_list')
 
     def test_get_task(self):
@@ -33,3 +33,4 @@ class TaskTests(APITestCase):
         response = self.client.post(self.url_create_list, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Task.objects.last().title, "Nova Tarefa Teste")
+
