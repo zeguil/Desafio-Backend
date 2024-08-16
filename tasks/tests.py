@@ -34,3 +34,40 @@ class TaskTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Task.objects.last().title, "Nova Tarefa Teste")
 
+
+class DetailTests(APITestCase):
+    
+    def setUp(self):
+        self.task = Task.objects.create(
+            title="update e delete",
+            description="descricao de teste",
+            due_date="2024-08-18"
+        )
+        self.detail_url = reverse('task-detail', args=[self.task.id])
+    
+    def test_get_task(self):
+        # verifica se retorna a terfa com id especifico e status 200
+        response = self.client.get(self.detail_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['title'], self.task.title)
+        self.assertEqual(response.data['description'], self.task.description)
+
+    def test_put_task(self):
+        # verifica se retorna 200 e se os campos que foram atualizados
+        data = {
+            "title": "atrefa atualizada",
+            "description": "tarefa com uma nova descricao",
+            "due_date": "2024-08-18"
+        }
+        response = self.client.put(self.detail_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.task.refresh_from_db()
+        self.assertEqual(self.task.title, data['title'])
+        self.assertEqual(self.task.description, data['description'])
+
+    def test_delete_task(self):
+        # deleta uma tarefa, retorna status 200 e a menssagem 
+        response = self.client.delete(self.detail_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, {'message': 'Task deleted successfully.'})
+        self.assertFalse(Task.objects.filter(id=self.task.id).exists())
