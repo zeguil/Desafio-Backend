@@ -9,7 +9,7 @@ from .serializers import TaskSerializer
 @api_view(['GET', 'POST'])
 def view_task(request):
     if request.method == 'GET':
-        tasks = Task.objects.all()
+        tasks = Task.objects.filter(is_deleted=False)
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)
     
@@ -23,7 +23,7 @@ def view_task(request):
 # READ BY ID, UPDATE E DELETE TASKS
 @api_view(['GET', 'PUT', 'DELETE'])
 def detail_task(request, id):
-    task = get_object_or_404(Task, pk=id)
+    task = get_object_or_404(Task, pk=id, is_deleted=False)
     
     if request.method == 'GET':
         serializer = TaskSerializer(task)
@@ -37,5 +37,6 @@ def detail_task(request, id):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     if request.method == 'DELETE':
+        task.is_deleted = True
         task.delete()
         return Response({'message': 'Task deleted successfully.'}, status=status.HTTP_200_OK)
