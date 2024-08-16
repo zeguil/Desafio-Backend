@@ -1,7 +1,9 @@
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
+
 from .models import Task
+
 
 class TaskTests(APITestCase):
 
@@ -36,7 +38,7 @@ class TaskTests(APITestCase):
 
 
 class DetailTests(APITestCase):
-    
+
     def setUp(self):
         self.task = Task.objects.create(
             title="update e delete",
@@ -44,15 +46,17 @@ class DetailTests(APITestCase):
             due_date="2024-08-18"
         )
         self.detail_url = reverse('task-detail', args=[self.task.id])
-    
+
     def test_get_task(self):
-        # verifica se retorna a terfa com id especifico e status 200
+        # testa a requisição GET por ID
+        # verifica se retorna a terefa com id especifico e status 200
         response = self.client.get(self.detail_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['title'], self.task.title)
         self.assertEqual(response.data['description'], self.task.description)
 
     def test_put_task(self):
+        # testa a requisição PUT
         # verifica se retorna 200 e se os campos que foram atualizados
         data = {
             "title": "atrefa atualizada",
@@ -66,7 +70,8 @@ class DetailTests(APITestCase):
         self.assertEqual(self.task.description, data['description'])
 
     def test_delete_task(self):
-        # deleta uma tarefa, retorna status 200 e a menssagem 
+        # testa a requisição DELETE
+        # deleta uma tarefa, retorna status 200 e a menssagem
         response = self.client.delete(self.detail_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, {'message': 'Task deleted successfully.'})

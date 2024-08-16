@@ -28,8 +28,7 @@ INSTALLED_APPS = [
     # Meus Apps
     'tasks',
     # Terceiros
-    'rest_framework'
-    
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
