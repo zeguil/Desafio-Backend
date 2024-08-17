@@ -1,8 +1,10 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .models import Task
@@ -14,13 +16,19 @@ def index(request):
 
 
 # DOCUMENTAÇÃO SWAGGER PARA READ E CREATE TASKS
+query_params = [
+    openapi.Parameter('title', openapi.IN_QUERY, description='Título da tarefa', type=openapi.TYPE_STRING, required=False),
+    openapi.Parameter('date', openapi.IN_QUERY, description='Data de vencimento', type=openapi.TYPE_STRING, required=False),
+]
+
+
 @swagger_auto_schema(
     method='get',
-    operation_summary='busca todas as tarefas',
-    operation_description='busca todas  as tarefas que foram criadas, as taferas marcadas como deletadas não irão aparecer',
-    responses={
-        200: TaskSerializer(many=True),
-    },
+    operation_summary='Busca todas as tarefas',
+    operation_description='Busca todas as tarefas que foram criadas. As tarefas marcadas como deletadas não aparecerão.',
+    responses={200: TaskSerializer(many=True)},
+    manual_parameters=query_params,  
+    security=[{'Bearer': []}],
 )
 @swagger_auto_schema(
     method='post',
@@ -28,9 +36,11 @@ def index(request):
     operation_description='cria uma nova tarefa com os dados fornecidos na requisição',
     request_body=TaskSerializer,
     responses={201: TaskSerializer, 400: 'Requisição incorreta'},
+    security=[{'Bearer': []}],
 )
 # VIEWS READ E CREATE TASKS
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
 def view_task(request):
     if request.method == 'GET':
         if request.query_params:
@@ -68,6 +78,7 @@ def view_task(request):
     operation_summary=' busca uma tarefa pelo seu ID',
     operation_description='busca uma tarefa pelo ID se ela não estiver marcada como deletada',
     responses={200: TaskSerializer, 404: 'Tarefa não encontrada'},
+    security=[{'Bearer': []}],
 )
 @swagger_auto_schema(
     method='put',
@@ -75,15 +86,18 @@ def view_task(request):
     operation_description='atualiza os campos de uma tarefa pelo seu ID',
     request_body=TaskSerializer,
     responses={200: TaskSerializer, 400: 'Requisição incorreta', 404: 'Tarefa não encontrada'},
+    security=[{'Bearer': []}],
 )
 @swagger_auto_schema(
     method='delete',
     operation_summary='exclui tarefa',
     operation_description='oculta uma tarefa sem remove-la do banco de dados.',
     responses={200: 'Tarefa excluida', 404: 'Tarefa não encontrada'},
+    security=[{'Bearer': []}],
 )
 # VIEWS READ BY ID, UPDATE E DELETE TASKS
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def detail_task(request, id):
     task = get_object_or_404(Task, pk=id, is_deleted=False)
 
