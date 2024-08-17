@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
@@ -6,6 +7,10 @@ from rest_framework.response import Response
 
 from .models import Task
 from .serializers import TaskSerializer
+
+
+def index(request):
+    return HttpResponse('Sistema de Gerenciamento de Tarefas <br><br> Acesse a documentação no <a href="http://127.0.0.1:8000/docs">Swagger<a>')
 
 
 # DOCUMENTAÇÃO SWAGGER PARA READ E CREATE TASKS
