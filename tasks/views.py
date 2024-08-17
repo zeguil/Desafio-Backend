@@ -27,7 +27,7 @@ query_params = [
     operation_summary='Busca todas as tarefas',
     operation_description='Busca todas as tarefas que foram criadas. As tarefas marcadas como deletadas não aparecerão.',
     responses={200: TaskSerializer(many=True)},
-    manual_parameters=query_params,  
+    manual_parameters=query_params,
     security=[{'Bearer': []}],
 )
 @swagger_auto_schema(

@@ -32,6 +32,9 @@ lint = 'ruff check . && ruff check . --diff'
 format = 'ruff check . --fix && ruff format .'
 run = 'task test && python manage.py runserver'
 test = 'python manage.py test tasks'
+migrations = 'python manage.py makemigrations'
+migrate = 'python manage.py migrate'
+
 
 
 [build-system]
