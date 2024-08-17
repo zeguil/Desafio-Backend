@@ -49,7 +49,6 @@ def view_task(request):
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)
 
- 
     if request.method == 'POST':
         serializer = TaskSerializer(data=request.data)
         if serializer.is_valid():
@@ -98,4 +97,3 @@ def detail_task(request, id):
         task.is_deleted = True
         task.delete()
         return Response({'message': 'Task deleted successfully.'}, status=status.HTTP_200_OK)
- 

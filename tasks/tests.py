@@ -4,7 +4,7 @@ from rest_framework.test import APITestCase
 
 from .models import Task
 
-
+# TESTES ENPOINTS READ E CREATE
 class TaskTests(APITestCase):
 
     def setUp(self):
@@ -37,6 +37,7 @@ class TaskTests(APITestCase):
         self.assertEqual(Task.objects.last().title, "Nova Tarefa Teste")
 
 
+# TESTES ENPOINTS READ BY ID, UPDATE E DELETE
 class DetailTests(APITestCase):
 
     def setUp(self):
@@ -76,3 +77,31 @@ class DetailTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, {'message': 'Task deleted successfully.'})
         self.assertFalse(Task.objects.filter(id=self.task.id).exists())
+
+# TESTS ENDPOINTS DE FILTRO POR TITULO E DATA
+class TaskFilterTests(APITestCase):
+
+    def setUp(self):
+        self.task1 = Task.objects.create(
+            title="Tarefa 1",
+            description="fazer compras",
+            due_date="2024-08-18"
+        )
+        self.task2 = Task.objects.create(
+            title="Tarefa 2",
+            description="cria uma API",
+            due_date="2024-08-19"
+        )
+        self.url_create_list = reverse('task-create_list')
+
+    # teste de busca por titulo
+    def test_get_task_by_title(self):
+        response = self.client.get(self.url_create_list, {'title': 'Tarefa 1'})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data[0]['title'], self.task1.title)
+
+    #teste de busca por data
+    def test_get_task_by_due_date(self):
+        response = self.client.get(self.url_create_list, {'date': '2024-08-19'})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data[0]['due_date'], self.task2.due_date)
