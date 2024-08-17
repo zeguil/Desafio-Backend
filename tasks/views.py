@@ -28,10 +28,28 @@ from .serializers import TaskSerializer
 @api_view(['GET', 'POST'])
 def view_task(request):
     if request.method == 'GET':
+        if request.query_params:
+            title = request.query_params.get('title')
+            due_date = request.query_params.get('date')
+
+            if title and due_date:
+                return Response({'error': 'Você deve passar um único parâmetro'}, status=status.HTTP_400_BAD_REQUEST)
+
+            if title:
+                tasks = Task.objects.filter(title__icontains=title, is_deleted=False)
+            elif due_date:
+                tasks = Task.objects.filter(due_date=due_date, is_deleted=False)
+            else:
+                return Response({'error': 'Parâmetro inválido'}, status=status.HTTP_400_BAD_REQUEST)
+
+            serializer = TaskSerializer(tasks, many=True)
+            return Response(serializer.data)
+
         tasks = Task.objects.filter(is_deleted=False)
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)
 
+ 
     if request.method == 'POST':
         serializer = TaskSerializer(data=request.data)
         if serializer.is_valid():
@@ -80,3 +98,4 @@ def detail_task(request, id):
         task.is_deleted = True
         task.delete()
         return Response({'message': 'Task deleted successfully.'}, status=status.HTTP_200_OK)
+ 
