@@ -22,8 +22,8 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0)),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0)),
-    path('admin/', admin.site.urls),
-    path('', include('tasks.urls')),
     path('token/', TokenObtainPairView.as_view(), name='token'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('', include('tasks.urls')),
+    path('admin/', admin.site.urls),
 ]

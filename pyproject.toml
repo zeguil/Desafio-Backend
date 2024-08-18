@@ -20,7 +20,7 @@ psycopg2 = "^2.9.9"
 
 [tool.ruff]
 line-length = 150
-extend-exclude = ['migrations', 'manage.py', 'tests.py']
+extend-exclude = ['migrations', 'manage.py', 'tests.py', 'create_superuser.py']
 
 [tool.ruff.lint]
 preview = true
