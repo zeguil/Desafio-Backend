@@ -84,17 +84,18 @@ Isso irá construir a imagem do Docker, iniciar o container para a aplicação D
 Edite o arquivo settings.py para incluir as credenciais do banco de dados PostgreSQL:
 
    ```
-   DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'nome_do_banco',
-        'USER': 'usuario',
-        'PASSWORD': 'senha',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
+      DATABASES = {
+      'default': {
+         'ENGINE': 'django.db.backends.postgresql',
+         'NAME': 'nome_do_banco',
+         'USER': 'usuario',
+         'PASSWORD': 'senha',
+         'HOST': 'localhost',
+         'PORT': '5432',
+         }}
+      
    ```
+
 5. **Ative o Ambiente Virtual do Poetry**
 
    ```
@@ -102,29 +103,34 @@ Edite o arquivo settings.py para incluir as credenciais do banco de dados Postgr
    ```
 
 6. **Execute as migrações do banco de dados:**
-   ```
-   task migrate
 
    ```
+   task migrate
+   ```
 7. **Crie um super usuário**
+
    ```
    task create_user
    ```
 
 8. **Execute o Projeto**
+
    ```
    task run
    ```
 
 8. **Caso queira rodar os testes**
+
    ```
    task test
    ```
 
 ## Documentação da API
+
 A documentação da API está disponível no Swagger após iniciar o servidor em http://localhost:8000/docs/
 
 #### Autenticação JWT
+
 Todos os endpoints são protegidos e requerem autenticação JWT.
 
 Para obter um token JWT:
@@ -132,6 +138,7 @@ Para obter um token JWT:
 Endpoint: POST token/
 
 Corpo da Requisição:
+
 ```
 {
     "username": "user",
@@ -147,12 +154,14 @@ Corpo da Requisição:
 |senha: 1234 |
 
 Resposta:
+
 ```
 {
     "refresh": "string",
     "access": "string"
 }
 ```
+
 - copie o token retornado de 'access' para fazer login no sistema
 
 - **Inclua o token JWT no clicando em Authorize no canto superior direito da página do Swagger**
