@@ -1,0 +1,8 @@
+*.sh eol=lf
+Dockerfile eol=lf
+*.yml eol=lf
+*.yaml eol=lf
+*.toml eol=lf
+*.lock eol=lf
+
+* text=auto
