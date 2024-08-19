@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Desafio para Backend Junior"
 authors = ["Jose Guilherme Lins"]
 readme = "README.md"
+packages = [{ include = "config" }]
 
 [tool.poetry.dependencies]
 python = "^3.12"

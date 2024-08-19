@@ -75,7 +75,7 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'db', # 'localhost' caso rodar fora do docker
+        'HOST': 'localhost', # 'localhost' caso rodar fora do docker
         'PORT': '5432',
     }
 }

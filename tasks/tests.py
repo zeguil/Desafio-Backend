@@ -19,12 +19,12 @@ class TaskTests(APITestCase):
         self.task1 = Task.objects.create(
             title="Tarefa 1",
             description="fazer compras",
-            due_date="2024-08-18"
+            due_date="2024-09-20"
         )
         self.task2 = Task.objects.create(
             title="Tarefa 2",
             description="cria uma API",
-            due_date="2024-08-19"
+            due_date="2024-10-19"
         )
         self.url_create_list = reverse('task-create_list')
 
@@ -45,7 +45,7 @@ class TaskTests(APITestCase):
         data = {
             "title": "Nova Tarefa Teste",
             "description": "Criando uma nova tarefa",
-            "due_date": "2024-08-18"
+            "due_date": "2024-08-30"
         }
         self.authenticate()
         response = self.client.post(self.url_create_list, data, format='json')
@@ -64,7 +64,7 @@ class DetailTests(APITestCase):
         self.task = Task.objects.create(
             title="update e delete",
             description="descricao de teste",
-            due_date="2024-08-18"
+            due_date="2024-08-30"
         )
         self.detail_url = reverse('task-detail', args=[self.task.id])
 
@@ -88,7 +88,7 @@ class DetailTests(APITestCase):
         data = {
             "title": "tarefa atualizada",
             "description": "nova descricao",
-            "due_date": "2024-08-18"
+            "due_date": "2024-08-30"
         }
         response = self.client.put(self.detail_url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -116,12 +116,12 @@ class TaskFilter(APITestCase):
         self.task1 = Task.objects.create(
             title="Tarefa 1",
             description="fazer compras",
-            due_date="2024-08-18"
+            due_date="2024-08-30"
         )
         self.task2 = Task.objects.create(
             title="Tarefa 2",
             description="cria uma API",
-            due_date="2024-08-19"
+            due_date="2024-10-19"
         )
         self.url_create_list = reverse('task-create_list')
 
@@ -138,6 +138,6 @@ class TaskFilter(APITestCase):
     #teste de busca por data
     def test_get_task_by_due_date(self):
         self.authenticate()
-        response = self.client.get(self.url_create_list, {'date': '2024-08-19'})
+        response = self.client.get(self.url_create_list, {'date': '2024-10-19'})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0]['due_date'], self.task2.due_date)
